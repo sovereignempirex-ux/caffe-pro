@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "c7a608b5-7a23-419b-ae80-da6dd828fe56",
+      "name": "??????",
+      "email": "test-api@mood.local",
+      "phone": "01000000000",
+      "role": "user",
+      "createdAt": "2026-08-24T18:24:59.544Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "MZ-899688",
+      "userId": "c7a608b5-7a23-419b-ae80-da6dd828fe56",
+      "items": [
+        {
+          "name": "?????",
+          "price": 55,
+          "quantity": 1
+        }
+      ],
+      "total": 55,
+      "status": "Pending",
+      "createdAt": "2026-08-24T18:24:59.688Z"
+    }
+  ],
+  "settings": {},
+  "sessions": [
+    {
+      "token": "f2d2a288-bb4c-46d3-a04e-c5523797c0d1",
+      "userId": "c7a608b5-7a23-419b-ae80-da6dd828fe56",
+      "createdAt": "2026-08-24T18:24:59.547Z"
+    }
+  ]
+}
