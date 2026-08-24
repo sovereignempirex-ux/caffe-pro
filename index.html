@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مزاج Mood - كافيه الطرب</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/world.css">
+  <link rel="stylesheet" href="css/glass-plus.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Cinematic Intro Overlay -->
+  <div id="intro-overlay" class="intro-overlay">
+    <div class="intro-content">
+      <h1 class="logo intro-logo">مزاج <span>Mood</span></h1>
+      <p class="intro-text">جاري دخول عالم الكافيه...</p>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <h1 class="logo">مزاج <span>Mood</span></h1>
+    <button class="nav-toggle" aria-label="فتح القائمة" onclick="document.querySelector('.navbar').classList.toggle('nav-open')">☰</button>
+    <ul>
+      <li><a href="#home">الرئيسية</a></li>
+      <li><a href="#menu">المنيو</a></li>
+      <li><a href="#artists">ركن الطرب</a></li>
+      <li><a href="#contact">زورنا</a></li>
+      <li><a href="login.html" id="account-link">دخول / حسابي</a></li>
+      <li><a href="admin.html">الإدارة</a></li>
+    </ul>
+    <div class="cart-icon-container">
+      <button class="cart-btn" onclick="toggleCart()">🛒 السلة (<span id="cart-count">0</span>)</button>
+    </div>
+  </nav>
+
+  <!-- Cart Slide-in Panel -->
+  <div id="cart-panel" class="cart-panel">
+    <div class="cart-header">
+      <h3>سلة الطلبات</h3>
+      <button onclick="toggleCart()" class="close-cart">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items-container">
+      <!-- Cart items will be injected here -->
+      <p class="empty-cart-msg">السلة فارغة حالياً</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">الإجمالي: <span id="cart-total-price">0</span> جنيه</div>
+      <button class="btn checkout-btn" onclick="sendWhatsAppOrder()">إرسال الطلب عبر واتساب 📱</button>
+    </div>
+  </div>
+
+  <section id="home" class="hero">
+    <canvas id="cafe-world" aria-hidden="true"></canvas>
+    <div class="world" aria-hidden="true"><i class="orb orb-one"></i><i class="orb orb-two"></i><i class="steam s1"></i><i class="steam s2"></i><i class="bean b1">●</i><i class="bean b2">●</i><i class="bean b3">●</i><span class="beam"></span></div>
+    <div class="hero-text">
+      <h2>اشرب قهوتك على <span>مزاجك</span></h2>
+      <p>Drink Your Coffee With The Legends</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="btn">استكشف المنيو</a>
+        <a href="#contact" class="btn btn-outline">اطلب الآن</a>
+      </div>
+    </div>
+    <div id="empty-state" class="empty-state" hidden>☕<br><strong>لم نجد مشروبًا بهذا الاسم</strong><small>جرّب اسمًا آخر أو اختر قسمًا مختلفًا</small></div>
+  </section>
+
+  <!-- Live Search Bar Section -->
+  <section class="search-section">
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="ابحث عن مشروبك المفضّل..." oninput="filterMenu()">
+    </div>
+  </section>
+
+  <section id="menu" class="menu">
+    <h2 class="section-title">منيو المشروبات <span>Drinks Menu</span></h2>
+    
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button class="cat-btn active" onclick="filterCategory('all')">الكل</button>
+      <button class="cat-btn" onclick="filterCategory('coffee')">قهوة ساخنة</button>
+      <button class="cat-btn" onclick="filterCategory('tea')">شاي وأعشاب</button>
+      <button class="cat-btn" onclick="filterCategory('special')">مشروبات خاصة</button>
+      <button class="cat-btn" onclick="filterCategory('cold')">مشروبات باردة</button>
+      <button class="cat-btn" onclick="filterCategory('juice')">عصائر وسموزي</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+      
+      <!-- 1-10 قهوة -->
+      <div class="card" data-category="coffee" data-name="قهوة تركي">
+        <img src="coffe turky.jpg" alt="قهوة تركي">
+        <h3>قهوة تركي <span>Turkish Coffee</span></h3>
+        <p class="desc">سادة - مظبوط - زيادة - على الريحة</p>
+        <p class="price">30 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('قهوة تركي', 30)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('قهوة تركي', 30)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="اسبريسو">
+        <img src="espresso.jpg" alt="اسبريسو">
+        <h3>اسبريسو <span>Espresso</span></h3>
+        <p class="desc">شوت قهوة مركز وقوي</p>
+        <p class="price">40 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('اسبريسو', 40)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('اسبريسو', 40)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="امريكان كوفي">
+        <img src="amirican coffe.jpg" alt="امريكان كوفي">
+        <h3>امريكان كوفي <span>Americano</span></h3>
+        <p class="desc">اسبريسو + ماء ساخن</p>
+        <p class="price">45 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('امريكان كوفي', 45)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('امريكان كوفي', 45)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="لاتيه">
+        <img src="latte.jpg" alt="لاتيه">
+        <h3>لاتيه <span>Latte</span></h3>
+        <p class="desc">اسبريسو + حليب مبخر كريمي</p>
+        <p class="price">55 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('لاتيه', 55)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('لاتيه', 55)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="كابتشينو">
+        <img src="capatchenoo.jpg" alt="كابتشينو">
+        <h3>كابتشينو <span>Cappuccino</span></h3>
+        <p class="desc">اسبريسو + حليب + طبقة فوم</p>
+        <p class="price">55 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('كابتشينو', 55)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('كابتشينو', 55)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="موكا">
+        <img src="mocaa.jpg" alt="موكا">
+        <h3>موكا <span>Mocha</span></h3>
+        <p class="desc">اسبريسو + شوكولاتة + حليب</p>
+        <p class="price">60 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('موكا', 60)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('موكا', 60)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="فلات وايت">
+        <img src="flat white.jpg" alt="فلات وايت">
+        <h3>فلات وايت <span>Flat White</span></h3>
+        <p class="desc">اسبريسو دبل + حليب ناعم</p>
+        <p class="price">60 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('فلات وايت', 60)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('فلات وايت', 60)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="ماكياتو">
+        <img src="mackyatoo.jpg" alt="ماكياتو">
+        <h3>ماكياتو <span>Macchiato</span></h3>
+        <p class="desc">اسبريسو + رشة فوم حليب</p>
+        <p class="price">50 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('ماكياتو', 50)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('ماكياتو', 50)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="قهوة عربي">
+        <img src="coffe arabic.jpg" alt="قهوة عربي">
+        <h3>قهوة عربي <span>Arabic Coffee</span></h3>
+        <p class="desc">بالهيل والزعفران تقدم مع التمر</p>
+        <p class="price">35 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('قهوة عربي', 35)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('قهوة عربي', 35)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="coffee" data-name="قهوة فرنساوي">
+        <img src="coffe french.jpg" alt="قهوة فرنساوي">
+        <h3>قهوة فرنساوي <span>French Coffee</span></h3>
+        <p class="desc">بالبندق او الكراميل + لبن</p>
+        <p class="price">45 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('قهوة فرنساوي', 45)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('قهوة فرنساوي', 45)">+</button>
+        </div>
+      </div>
+
+      <!-- 11-15 شاي وسخن -->
+      <div class="card" data-category="tea" data-name="شاي بلبن">
+        <img src="tea at milk.jpg" alt="شاي بلبن">
+        <h3>شاي بلبن <span>Tea with Milk</span></h3>
+        <p class="desc">شاي كرك مظبوط على الفحم</p>
+        <p class="price">25 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('شاي بلبن', 25)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('شاي بلبن', 25)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="tea" data-name="شاي اخضر">
+        <img src="tea green.jpg" alt="شاي اخضر">
+        <h3>شاي اخضر <span>Green Tea</span></h3>
+        <p class="desc">بالنعناع او الليمون او سادة</p>
+        <p class="price">20 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('شاي اخضر', 20)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('شاي اخضر', 20)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="tea" data-name="ينسون">
+        <img src="yansoon.jpg" alt="ينسون">
+        <h3>ينسون <span>Anise</span></h3>
+        <p class="desc">مهدئ ومريح بعد الاكل</p>
+        <p class="price">20 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('ينسون', 20)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('ينسون', 20)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="tea" data-name="كركديه سخن">
+        <img src="carcadee.jpg" alt="كركديه سخن">
+        <h3>كركديه سخن <span>Hot Hibiscus</span></h3>
+        <p class="desc">كركديه سخن للبرد</p>
+        <p class="price">25 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('كركديه سخن', 25)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('كركديه سخن', 25)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="tea" data-name="قرفة باللبن">
+        <img src="kerfaa at milk.jpg" alt="قرفة باللبن">
+        <h3>قرفة باللبن <span>Cinnamon Milk</span></h3>
+        <p class="desc">قرفة + لبن + رشة مكسرات</p>
+        <p class="price">25 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('قرفة باللبن', 25)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('قرفة باللبن', 25)">+</button>
+        </div>
+      </div>
+
+      <!-- 16-20 شوكولاتة وخاص -->
+      <div class="card" data-category="special" data-name="هوت شوكليت">
+        <img src="hot chocklet.jpg" alt="هوت شوكليت">
+        <h3>هوت شوكليت <span>Hot Chocolate</span></h3>
+        <p class="desc">شوكولاتة ساخنة كريمي</p>
+        <p class="price">50 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('هوت شوكليت', 50)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('هوت شوكليت', 50)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="special" data-name="سحلب">
+        <img src="sahlab.jpg" alt="سحلب">
+        <h3>سحلب <span>Sahlab</span></h3>
+        <p class="desc">بالمكسرات وجوز الهند والقرفة</p>
+        <p class="price">40 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('سحلب', 40)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('سحلب', 40)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="special" data-name="سبانيش لاتيه">
+        <img src="spanish latte.jpg" alt="سبانيش لاتيه">
+        <h3>سبانيش لاتيه <span>Spanish Latte</span></h3>
+        <p class="desc">لاتيه + حليب مكثف</p>
+        <p class="price">65 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('سبانيش لاتيه', 65)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('سبانيش لاتيه', 65)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="special" data-name="بيستاشيو لاتيه">
+        <img src="bestashio latte.jpg" alt="بيستاشيو لاتيه">
+        <h3>بيستاشيو لاتيه <span>Pistachio Latte</span></h3>
+        <p class="desc">لاتيه + صوص بيستاشيو</p>
+        <p class="price">70 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('بيستاشيو لاتيه', 70)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('بيستاشيو لاتيه', 70)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="special" data-name="كوفي لافيرز">
+        <img src="coffe lafferz.jpg" alt="كوفي لافيرز">
+        <h3>كوفي لافيرز <span>Coffee Lovers</span></h3>
+        <p class="desc">قهوة + شوكولاتة + كريمة</p>
+        <p class="price">65 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('كوفي لافيرز', 65)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('كوفي لافيرز', 65)">+</button>
+        </div>
+      </div>
+
+      <!-- 21-25 بارد وسموثي -->
+      <div class="card" data-category="cold" data-name="ايس كوفي">
+        <img src="ice coffe.jpg" alt="ايس كوفي">
+        <h3>ايس كوفي <span>Iced Coffee</span></h3>
+        <p class="desc">قهوة مثلجة باللبن</p>
+        <p class="price">55 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('ايس كوفي', 55)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('ايس كوفي', 55)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="cold" data-name="ايس لاتيه">
+        <img src="ice latte.jpg" alt="ايس لاتيه">
+        <h3>ايس لاتيه <span>Iced Latte</span></h3>
+        <p class="desc">لاتيه ساقع منعش</p>
+        <p class="price">60 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('ايس لاتيه', 60)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('ايس لاتيه', 60)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="cold" data-name="فرابتشينو">
+        <img src="frubchino.jpg" alt="فرابتشينو">
+        <h3>فرابتشينو <span>Frappuccino</span></h3>
+        <p class="desc">قهوة مثلجة بالكريمة والشوكولاتة</p>
+        <p class="price">70 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('فرابتشينو', 70)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('فرابتشينو', 70)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="juice" data-name="سموزي فراولة">
+        <img src="smozy.jpg" alt="سموزي فراولة">
+        <h3>سموزي فراولة <span>Strawberry Smoothie</span></h3>
+        <p class="desc">فريش وطبيعي 100% بدون سكر</p>
+        <p class="price">65 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('سموزي فراولة', 65)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('سموزي فراولة', 65)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="juice" data-name="سموزي مانجو">
+        <img src="smozy mango.jpg" alt="سموزي مانجو">
+        <h3>سموزي مانجو <span>Mango Smoothie</span></h3>
+        <p class="desc">مانجو مثلجة مع زبادي</p>
+        <p class="price">65 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('سموزي مانجو', 65)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('سموزي مانجو', 65)">+</button>
+        </div>
+      </div>
+
+      <!-- 26-30 عصاير -->
+      <div class="card" data-category="juice" data-name="ليمون بالنعناع">
+        <img src="limon.jpg" alt="ليمون بالنعناع">
+        <h3>ليمون بالنعناع <span>Lemon Mint</span></h3>
+        <p class="desc">ساقع و منعش - فرش</p>
+        <p class="price">30 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('ليمون بالنعناع', 30)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('ليمون بالنعناع', 30)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="cold" data-name="موهيتو">
+        <img src="mohetoo.jpg" alt="موهيتو">
+        <h3>موهيتو <span>Mojito</span></h3>
+        <p class="desc">نعناع + ليمون + صودا</p>
+        <p class="price">45 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('موهيتو', 45)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('موهيتو', 45)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="juice" data-name="عصير برتقال">
+        <img src="juice orange.jpg" alt="عصير برتقال">
+        <h3>عصير برتقال <span>Orange Juice</span></h3>
+        <p class="desc">فريش معصور وقت الطلب</p>
+        <p class="price">35 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('عصير برتقال', 35)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('عصير برتقال', 35)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="cold" data-name="كركديه ساقع">
+        <img src="ice carkadee.jpg" alt="كركديه ساقع">
+        <h3>كركديه ساقع <span>Iced Hibiscus</span></h3>
+        <p class="desc">كركديه ساقع منعش</p>
+        <p class="price">25 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('كركديه ساقع', 25)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('كركديه ساقع', 25)">+</button>
+        </div>
+      </div>
+      <div class="card" data-category="cold" data-name="مياه معدنية">
+        <img src="watter.jpg" alt="مياه معدنية">
+        <h3>مياه معدنية <span>Mineral Water</span></h3>
+        <p class="desc">صغيرة 500مل</p>
+        <p class="price">10 جنيه</p>
+        <div class="card-actions">
+          <button class="btn" onclick="order('مياه معدنية', 10)">اطلب الان</button>
+          <button class="btn-cart-add" onclick="addToCart('مياه معدنية', 10)">+</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="artists" class="artists">
+    <h2 class="section-title">ركن الطرب <span>Music Corner</span></h2>
+    <p class="subtitle">بنسمع العظماء واحنا بنشرب قهوتنا</p>
+    <div class="artists-grid">
+      <div class="artist-card">
+        <img src="umm kolthoom.jpg" alt="ام كلثوم">
+        <h3>ام كلثوم</h3>
+        <p>Umm Kulthum</p>
+      </div>
+      <div class="artist-card">
+        <img src="abdel haleem.jpg" alt="عبدالحليم حافظ">
+        <h3>عبدالحليم حافظ</h3>
+        <p>Abdel Halim Hafez</p>
+      </div>
+      <div class="artist-card">
+        <img src="goerge.jpg" alt="جورج وسوف">
+        <h3>جورج وسوف</h3>
+        <p>George Wassouf</p>
+      </div>
+      <div class="artist-card">
+        <img src="fayrouz.jpg" alt="فيروز">
+        <h3>فيروز</h3>
+        <p>Fairuz</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2 class="section-title">زورنا <span>Visit Us</span></h2>
+    <p>فاتحين كل يوم من 5 العصر لـ 2 بليل</p>
+    <p>📍 كفر الشيخ - شارع النبوي المهندس</p>
+    <a href="https://wa.me/201283073813" target="_blank" class="btn">كلمنا واتساب</a>
+  </section>
+
+  <footer><p>© 2026 مزاج Mood. جميع الحقوق محفوظة</p></footer>
+  <div id="product-modal" class="product-modal" aria-hidden="true"><div class="modal-card"><button class="modal-close" onclick="closeProductModal()">×</button><div id="modal-product-content"></div></div></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <script src="config/api.config.js"></script>
+  <script src="js/app-settings.js"></script>
+  <script src="script.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api-client.js"></script>
+  <script src="js/user-features.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.cafe.menu
+productName: Cafe Menu
+files:
+  - filter:
+      - '**/*'
+      - '!dist{,/**}'
+      - '!node_modules/.cache{,/**}'
+win:
+  target: nsis
+  icon: ice coffe.ico
+electronVersion: 43.4.1
